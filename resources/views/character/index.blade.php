@@ -6,9 +6,9 @@
     @foreach ($characters as $index => $pub)
             <h2 class="text -3xl hover:text-gray-300">
  
-                <a href="{{ route('characters.show', ['id' => $pub->id])}}">
+                <a href="{{ route('characters.show', ['id' => $pub->id])}}" style="text-decoration:none;">
                    
-                    Nazwa: {{$pub['name']}}   <br> <br>
+                    {{$pub['name']}} <br>
                     
                 </a>
 
