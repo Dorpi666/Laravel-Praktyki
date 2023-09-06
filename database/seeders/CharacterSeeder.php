@@ -19,6 +19,7 @@ class CharacterSeeder extends Seeder
             'lane' => 'Bot (dla mainów: Każda)',
             'shop-cost' => '6300',
             'difficulty' => '5',
+            'ChampPicture' => 'storage/Grafika/Bard.png',
         ]);
     }
 }

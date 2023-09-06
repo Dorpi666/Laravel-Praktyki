@@ -18,7 +18,7 @@ class CharacterController extends Controller
 
        // return view('character.index');
     }
-
+    
     public function show(int $id)
     {
         $character = Character::where('id', $id)->firstOrFail();
@@ -27,4 +27,6 @@ class CharacterController extends Controller
             'character' => $character
         ]);
     }
+
+    
 }

@@ -11,7 +11,7 @@
                     {{$pub['name']}} <br>
                     
                 </a>
-
+                
             </h2>
     @endforeach
 

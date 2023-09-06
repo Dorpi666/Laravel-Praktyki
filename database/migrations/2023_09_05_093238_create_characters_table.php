@@ -18,7 +18,18 @@ return new class extends Migration
             $table->string('lane');
             $table->unsignedInteger('shop-cost');
             $table->string('difficulty');
+            $table->string('ChampPicture');
             $table->timestamps();
+        });
+
+        Schema::create('comments', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('user_id')->unsigned();
+            $table->integer('champion_id')->unsigned();
+            $table->integer('parent_id')->unsigned()->nullable();
+            $table->text('body');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

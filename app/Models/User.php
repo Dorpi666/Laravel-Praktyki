@@ -21,13 +21,21 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'MainCharacter',
     ];
+
+    public function Main()
+    {
+        return $this->belongsTo(Character::class);
+        
+    }
 
     /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
      */
+
     protected $hidden = [
         'password',
         'remember_token',
