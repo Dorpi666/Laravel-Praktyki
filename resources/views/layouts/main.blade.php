@@ -46,7 +46,15 @@
         h3{
              text-align: center;
         }
+
+        .form-group{
+            text-align: center;
+        }
         
+        .card-header{
+            text-align: center;
+        }
+
     </style>
 
     <title> Main </title>
@@ -59,7 +67,7 @@
         
         <a href="{{ route('characters.index') }}" style="text-decoration:none;">Postacie</a>
 
-        
+        <a href="{{ route('registration.create') }}" style="text-decoration:none;">Rejestracja</a>
 
         @auth
         <a href="{{ route('Show.Users') }}" style="text-decoration:none;">Użytkownicy</a>

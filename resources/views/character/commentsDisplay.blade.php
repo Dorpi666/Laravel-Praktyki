@@ -5,6 +5,8 @@
         <strong>{{ $comment->user->name }}</strong>
         <p>{{ $comment->body }}</p>
         <a href="" id="reply"></a>
+
+        @auth
         <form method="post" action="{{ route('comments.store') }}">
             @csrf
             <div class="form-group">
@@ -16,6 +18,9 @@
                 <input type="submit" class="btn btn-warning" value="Reply" />
             </div>
         </form>
+        
+
+        @endauth
 
         @if($comment->replies->isNotEmpty())
           @include('character.commentsDisplay', ['comments' => $comment->replies])

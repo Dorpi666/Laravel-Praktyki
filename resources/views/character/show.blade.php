@@ -28,6 +28,8 @@
    
                     <hr />
                     <h4>Add comment</h4>
+                    @auth
+        
                     <form method="post" action="{{ route('comments.store') }}">
                         @csrf
                         <div class="form-group">
@@ -38,5 +40,9 @@
                             <input type="submit" class="btn btn-success" value="Add Comment" />
                         </div>
                     </form>
-    
+                    @else
+                    <p> tylko dla zalogowanych </p>
+        
+                     @endauth
+
 @endsection

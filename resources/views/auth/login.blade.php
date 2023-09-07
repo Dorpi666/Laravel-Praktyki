@@ -29,5 +29,15 @@
     </div>
    </form>
 
+   <div class="form-group row">
+                              <div class="col-md-6 offset-md-4">
+                                  <div class="checkbox">
+                                      <label>
+                                          <a href="{{ route('forget.password.get') }}">Reset Password</a>
+                                      </label>
+                                  </div>
+                              </div>
+                          </div>
+
 </h3>
 @endsection
