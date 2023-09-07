@@ -13,8 +13,9 @@ class CommentsController extends Controller
     {
     	$request->validate([
             'body'=>'required',
+            
         ]);
-   
+    
         $input = $request->all();
         $input['user_id'] = auth()->user()->id;
     

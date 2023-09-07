@@ -7,7 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Models\User;
 use App\Models\Character;
 use App\Http\Controllers\LoginController;
-
+use App\Http\Controllers\CommentsController;
 
 
 
@@ -39,6 +39,6 @@ Route::post('login', [LoginController::class, 'login'])->name('auth.login');
 Route::post('logout', [LoginController::class, 'logout'])->name('auth.logout')->middleware('auth');
 
 // route komentarzy
-Route::get('Comments', [CommentsController::class, "user"])->name('comments.user');
-Route::get('Comments', [CommentsController::class, "replies"])->name('comments.replies');
-Route::get('Comments', [CommentsController::class, "replies"])->name('comments.store');
+Route::post('Comments', [CommentsController::class, "user"])->name('comments.user');
+Route::post('Comments', [CommentsController::class, "replies"])->name('comments.replies');
+Route::post('Comments', [CommentsController::class, "store"])->name('comments.store');

@@ -23,16 +23,16 @@
     <br><br><br><br>
     
     <h4>Display Comments</h4>
-  
-                    @include('Comments.commentsDisplay', ['comments' => $character->comments, 'champion_id' => $character->id])
+    
+                    @include('character.commentsDisplay', ['comments' => $character->comments, 'champion_id' => $character->id])
    
                     <hr />
                     <h4>Add comment</h4>
-                    <form method="post" action="{{ route('comments.store'   ) }}">
+                    <form method="post" action="{{ route('comments.store') }}">
                         @csrf
                         <div class="form-group">
                             <textarea class="form-control" name="body"></textarea>
-                            <input type="hidden" name="post_id" value="{{ $character->id }}" />
+                            <input type="hidden" name="champion_id" value="{{ $character->id }}" />
                         </div>
                         <div class="form-group">
                             <input type="submit" class="btn btn-success" value="Add Comment" />

@@ -4,14 +4,19 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Http\Controllers\CommentsController;
 
 class Comments extends Model
 {
 
     protected $dates = ['deleted_at'];
    
-    protected $fillable = ['user_id', 'champion_id', 'parent_id', 'body'];
+    protected $fillable = [
+        'user_id',
+        'champion_id',
+        'parent_id',
+        'body'
+    ];
    
     
     public function user()
@@ -22,7 +27,7 @@ class Comments extends Model
     
     public function replies()
         {
-            return $this->hasMany(Comment::class, 'parent_id');
+            return $this->hasMany(Comments::class, 'parent_id');
         }
 
 }
