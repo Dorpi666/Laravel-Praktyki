@@ -16,7 +16,14 @@
                 Rola Postaci: {{$character['role']}}   <br>
                 Linia Postaci: {{$character['lane']}}  <br>
                 Cena Postaci: {{$character['shop-cost']}}  <br>
-                Poziom trudności Postaci: {{$character['difficulty']}}
+                Poziom trudności Postaci: {{$character['difficulty']}}<br><br>
+
+                @if (Gate::allows('autoryzacja')) {
+                <a href="{{ route('edit.champions',['id'=>$character->id]) }}" style="text-decoration:none;">Edytuj Championa</a>
+                }
+                @endif
+                            
+                   
                 
             
     </div>

@@ -1,71 +1,84 @@
 @extends('layouts.main')
-  
+
 @section('content')
-<main class="login-form">
-  <div class="cotainer">
-      <div class="row justify-content-center">
-          <div class="col-md-8">
-              <div class="card">
-                  <div class="card-header">Ustawienia użytkownika</div>
-                  <br><br>
+    <div class="content-wrapper">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="content-wrapper">{{ __('Change Password') }}</div>
 
-                  <div class="card-header">Zresetuj hasło</div>
+                    <form action="{{ route('login.reset.password') }}" method="POST">
+                        @csrf
+                        <div class="card-body">
+                            @if (session('status'))
+                                <div class="alert alert-success" role="alert">
+                                    {{ session('status') }}
+                                </div>
+                            @elseif (session('error'))
+                                <div class="alert alert-danger" role="alert">
+                                    {{ session('error') }}
+                                </div>
+                            @endif
 
-                  <div class="card-body">
-  
-                      <form action="{{ route('reset.password.post') }}" method="POST">
-                          @csrf
-                          <input type="hidden" name="token" value="{{ $token }}">
-  
-                          <div class="form-group row">
-                              <label for="old-password" class="col-md-4 col-form-label text-md-right">Old Password</label>
-                              <div class="col-md-6">
-                                  <input type="password" id="old-password" class="form-control" name="old-password" required autofocus>
-                                  @if ($errors->has('old-password'))
-                                      <br><span class="text-danger">{{ $errors->first('old-password') }}</span><br>
-                                  @endif
-                              </div>
-                          </div>
-  
-                          <div class="form-group row">
-                              <label for="password" class="col-md-4 col-form-label text-md-right">New Password</label>
-                              <div class="col-md-6">
-                                  <input type="password" id="password" class="form-control" name="password" required autofocus>
-                                  @if ($errors->has('password'))
-                                      <br><span class="text-danger">{{ $errors->first('password') }}</span><br>
-                                  @endif
-                              </div>
-                          </div>
-  
-                          <div class="form-group row">
-                              <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
-                              <div class="col-md-6">
-                                  <input type="password" id="password-confirm" class="form-control" name="password_confirmation" required autofocus>
-                                  @if ($errors->has('password_confirmation'))
-                                      <br><span class="text-danger">{{ $errors->first('password_confirmation') }}</span><br>
-                                  @endif
-                              </div>
-                          </div>
-  
-                          <div class="card-header">
-                              <button type="submit" class="btn btn-primary">
-                                  Reset Password
-                              </button>
-                          </div>
-                      </form>
+                            <div class="mb-3">
+                                <label for="oldPasswordInput" class="form-label">Old Password</label>
+                                <input name="old_password" type="password" class="form-control @error('old_password') is-invalid @enderror" id="oldPasswordInput"
+                                    placeholder="Old Password">
+                                @error('old_password')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="newPasswordInput" class="form-label">New Password</label>
+                                <input name="new_password" type="password" class="form-control @error('new_password') is-invalid @enderror" id="newPasswordInput"
+                                    placeholder="New Password">
+                                @error('new_password')
+                                    <span class="text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmNewPasswordInput" class="form-label">Confirm New Password</label>
+                                <input name="new_password_confirmation" type="password" class="form-control" id="confirmNewPasswordInput"
+                                    placeholder="Confirm New Password">
+                            </div>
+
+                        </div>
+
+                        <div class="card-footer">
+                            <button class="btn btn-success">Submit</button>
+                        </div>
+
+                    </form>
+
+
+                    <br>
+                    <br>
+
+
+                    <form action="{{ route('user.main') }}" method="POST">
+                    @csrf
+                    
+                       <select  name="character_id">
+
+                            <option>Select Champion</option>
                         
-                  </div>
-                  <div class="card-header">Zmiana maina</div>
-                    <?php 
-                        foreach ($characters as $id) {
-                        ?>
-                            <option><?php echo $id['name']; ?> </option>
-                            <?php 
-                            }
-                        ?>
-              </div>
-          </div>
-      </div>
-  </div>
-</main>
+                            @foreach ($characters as $key => $value)
+                                <option value="{{ $key }}" {{ ( $key == $selectedID) ? 'selected' : '' }}> 
+                                    {{ $value }} 
+                                
+                                </option>
+                            @endforeach
+                        
+                        </select>
+                        
+                        <input type="submit" value="save"/>
+
+                    </form>
+
+                    <div class="card">
+        
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

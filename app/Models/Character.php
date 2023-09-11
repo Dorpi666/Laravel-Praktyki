@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Comments;
-
+use Illuminate\Http\Request;
 
 class Character extends Model
 {
@@ -25,10 +25,15 @@ class Character extends Model
         'difficulty',
         'ChampPicture',
     ];
+
+    protected $attributes = [
+        'ChampPicture' => 'unknown.png'
+    ];
     
     public function comments()
     {
         return $this->hasMany(Comments::class, 'champion_id')->whereNull('parent_id');
     }
 
+    
 }

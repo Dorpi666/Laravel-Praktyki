@@ -2,7 +2,7 @@
 
 @foreach($comments as $comment)
     <div class="display-comment" @if($comment->parent_id != null) style="margin-left:40px;" @endif>
-        <strong>{{ $comment->user->name }}</strong>
+        <strong>{{ $comment->user->name }} {{ \Carbon\Carbon::parse($comment->created_at)->diffForHumans() }}</strong>
         <p>{{ $comment->body }}</p>
         <a href="" id="reply"></a>
 

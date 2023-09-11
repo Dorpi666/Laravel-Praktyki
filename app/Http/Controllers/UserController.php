@@ -21,4 +21,6 @@ class UserController extends Controller
         $character = $user->character;
         
     }
+
+   
 }

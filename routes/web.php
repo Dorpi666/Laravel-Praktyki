@@ -10,6 +10,10 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\RegistrationController;
 use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\OptionsController;
+use App\Http\Controllers\CudController;
+use Illuminate\Support\Facades\Gate;
+use App\Models\Policies;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +30,8 @@ use App\Http\Controllers\ForgotPasswordController;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
 // route championów
 Route::get('/', [SiteController::class,"index"])->name('general.home');
 Route::get('Users', [UserController::class,"Users"])->name('Show.Users')->middleware('auth');
@@ -42,11 +48,13 @@ Route::post('logout', [LoginController::class, 'logout'])->name('auth.logout')->
 Route::get('registration', [RegistrationController::class, "create"])->name('registration.create');
 Route::post('register', [RegistrationController::class, "store"])->name('registration.store');
 
+
 // route komentarzy
 
 Route::post('Comments', [CommentsController::class, "user"])->name('comments.user');
 Route::post('Comments', [CommentsController::class, "replies"])->name('comments.replies');
 Route::post('Comments', [CommentsController::class, "store"])->name('comments.store')->middleware('auth');
+
 
 // odnawianie hasła
 
@@ -55,3 +63,21 @@ Route::post('forget-password', [ForgotPasswordController::class, 'submitForgetPa
 
 Route::get('reset-password/{token}', [ForgotPasswordController::class, 'showResetPasswordForm'])->name('reset.password.get');
 Route::post('reset-password', [ForgotPasswordController::class, 'submitResetPasswordForm'])->name('reset.password.post');
+
+
+// Opcje użytkownika
+
+Route::get('Options', [OptionsController::class, "index"])->name('options.index');
+Route::post('reset-password', [ForgotPasswordController::class, 'LoginsubmitResetPasswordForm'])->name('login.reset.password');
+Route::get('characterslist', [CharacterController::class, "CharactersList"])->name('characters.list');
+Route::post('Options', [OptionsController::class, "ChangeMain"])->name('user.main');
+
+// Opcje admina
+
+Route::get('CUD', [CharacterController::class, "indexChange"])->name('cud.champions')->can('admin', Character::class);
+Route::get('CUD-edit/{id}', [CharacterController::class, "edit"])->name('edit.champions')->can('admin', Character::class);
+Route::put('CUD-update/{id}', [CharacterController::class, "update"])->name('update.champions')->can('admin', Character::class);
+Route::post('CUD-Add', [CharacterController::class, "add"])->name('add.champions')->can('admin', Character::class);
+Route::post('CUD-Delete', [CharacterController::class, "delete"])->name('delete.champions')->can('admin', Character::class);
+
+// Route::post('CUD-Update', [CudController::class, "update"])->name('update.champions');

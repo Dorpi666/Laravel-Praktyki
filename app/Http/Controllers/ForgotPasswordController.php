@@ -89,4 +89,29 @@ class ForgotPasswordController extends Controller
   
           return redirect('/login')->with('message', 'Your password has been changed!');
       }
+
+      // zmiana hasła dla zalogowanego użytkownika
+
+      public function LoginsubmitResetPasswordForm(Request $request)
+      {
+
+        $request->validate([
+            'old_password' => 'required',
+            'new_password' => 'required|confirmed',
+        ]);
+
+
+        #Match The Old Password
+        if(!Hash::check($request->old_password, auth()->user()->password)){
+            return back()->with("error", "Old Password Doesn't match!");
+        }
+
+
+        #Update the new Password
+        User::whereId(auth()->user()->id)->update([
+            'password' => Hash::make($request->new_password)
+        ]);
+
+        return back()->with("status", "Password changed successfully!");
+    }
 }
