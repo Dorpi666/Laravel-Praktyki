@@ -71,6 +71,7 @@ Route::get('Options', [OptionsController::class, "index"])->name('options.index'
 Route::post('reset-password', [ForgotPasswordController::class, 'LoginsubmitResetPasswordForm'])->name('login.reset.password');
 Route::get('characterslist', [CharacterController::class, "CharactersList"])->name('characters.list');
 Route::post('Options', [OptionsController::class, "ChangeMain"])->name('user.main');
+Route::post('UploadAwatar', [OptionsController::class, "storeAwatar"])->name('store.Awatar');
 
 // Opcje admina
 

@@ -63,6 +63,14 @@ return [
             'visibility' => 'public',
             'throw' => false,
         ],
+
+        'awatary' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/Awatar'),
+            'url' => env('APP_URL').'/storage/Awatar',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
     ],
 
     /*
@@ -78,6 +86,7 @@ return [
 
     'links' => [
         public_path('grafiki') => storage_path('app/public/Grafika'),
+        public_path('awatary') => storage_path('app/public/Awatar'),
         public_path('storage') => storage_path('app/public'),
     ],
 

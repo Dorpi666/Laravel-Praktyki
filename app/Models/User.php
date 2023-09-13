@@ -24,6 +24,11 @@ class User extends Authenticatable
         'email',
         'password',
         'MainCharacter',
+        'userAwatar'
+    ];
+
+    protected $attributes = [
+        'userAwatar' => 'unknown.png'
     ];
 
     public function Main()

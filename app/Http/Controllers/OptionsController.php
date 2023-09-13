@@ -38,4 +38,27 @@ class OptionsController extends Controller
         return back()->with("status", "Main changed successfully!");
 	    
     }
+
+    public function storeAwatar(Request $request)
+    {
+        $request->validate([
+            'image' => 'required|image|mimes:png|max:2048',
+        ]);
+        
+        $path = storage_path('Awatar');
+
+        if (! is_dir($path)) {
+            mkdir($path, 0777, true);
+        }
+
+        if ($file = $request->file('image')) {
+            $filePath = $file->store(options: 'awatary');
+            User::whereId(auth()->user()->id)->update(['userAwatar' => 'storage/Awatar/'.$filePath]);
+        }
+        
+
+        return redirect()
+            ->back()
+            ->with('success', 'Image successfully uploaded.');
+    }
 }

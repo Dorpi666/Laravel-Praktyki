@@ -113,8 +113,6 @@ class CharacterController extends Controller
     if ($file = $request->file('image')) {
         $filePath = $file->store(options: 'grafiki');
         Character::where('id', $id)->update(['ChampPicture' => 'storage/Grafika/'.$filePath]);
-        //Character::where('id', $id)->update(array('ChampPicture' => 'storage/Grafika/'.$fileData['fileName']));
-        //Character::where('id', $id)->update(['ChampPicture' => 'storage/Grafika'.$fileData['fileName'].'.'.$fileData['extension']]);
     }
     
 

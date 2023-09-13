@@ -74,6 +74,7 @@
         <a href="{{ route('Show.Users') }}" style="text-decoration:none;">Użytkownicy</a>
         <a href="{{ route('options.index') }}" style="text-decoration:none;">Ustawienia</a>
         <br> Zalogowany jako {{ auth()->user()->name }} 
+        
             <form action="{{ route('auth.logout') }}" method="POST">
                 @csrf
                 <div class="flex items-center justify-between">
