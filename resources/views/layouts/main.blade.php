@@ -73,7 +73,10 @@
         @auth
         <a href="{{ route('Show.Users') }}" style="text-decoration:none;">Użytkownicy</a>
         <a href="{{ route('options.index') }}" style="text-decoration:none;">Ustawienia</a>
-        <br> Zalogowany jako {{ auth()->user()->name }} 
+        <?php
+        $user = auth()->user();
+        ?>
+        <br> Zalogowany jako {{ auth()->user()->name }} <img src="{{ asset($user['userAwatar']) }}" width="60px" height="60px">
         
             <form action="{{ route('auth.logout') }}" method="POST">
                 @csrf
