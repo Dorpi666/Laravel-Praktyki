@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Comments;
 use Illuminate\Http\Request;
+use App\Http\Controllers\CharacterController;
 
 class Character extends Model
 {
@@ -23,9 +24,9 @@ class Character extends Model
         'lane',
         'shop-cost',
         'difficulty',
-        'ChampPicture',
+        'ChampPicture'
     ];
-
+    
     protected $attributes = [
         'ChampPicture' => 'unknown.png'
     ];

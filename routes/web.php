@@ -79,5 +79,6 @@ Route::get('CUD-edit/{id}', [CharacterController::class, "edit"])->name('edit.ch
 Route::put('CUD-update/{id}', [CharacterController::class, "update"])->name('update.champions')->can('admin', Character::class);
 Route::post('CUD-Add', [CharacterController::class, "add"])->name('add.champions')->can('admin', Character::class);
 Route::post('CUD-Delete', [CharacterController::class, "delete"])->name('delete.champions')->can('admin', Character::class);
+Route::post('UploadImage/{id}', [CharacterController::class, "storeImage"])->name('store.Image')->can('admin', Character::class);
 
-// Route::post('CUD-Update', [CudController::class, "update"])->name('update.champions');
+

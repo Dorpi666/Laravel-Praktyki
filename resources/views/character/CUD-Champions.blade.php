@@ -52,7 +52,8 @@
                                 <input name="difficulty" type="text" class="form-control" id="difficultyInput" placeholder="difficulty">
                                 
                             </div>
-
+                            
+                           
 
                         </div>
 
@@ -62,7 +63,34 @@
 
                     </form>
 
+                    <br>
+                    <br>
+
                     
+                    <form class="w-px-500 p-3 p-md-3" action="{{ route('store.Image',['id'=>$character->id]) }}" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label">Image</label> <br>
+                            Dodając zdjęcie, pamiętaj aby nazywało się "NazwaPostaci.png" np. Bard.png lub Ornn.png oraz posiadało jako tlo kanał alfa (przezroczyste tło)
+
+                            <div class="col-sm-9">
+                              <input type="file" class="form-control" name="image" @error('image') is-invalid @enderror id="selectImage">
+                            </div>
+                            @error('image')
+                                <span class="invalid-feedback" role="alert">
+                                    <strong>{{ $message }}</strong>
+                                </span>
+                            @enderror
+                            <img id="preview" src="#" alt="your image" class="mt-3" style="display:none;"/>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label"></label>
+                            <div class="col-sm-9">
+                                <button type="submit" class="btn btn-success btn-block">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+
 
                     <br> 
                     <br>
@@ -130,3 +158,16 @@
 
     </div>
 @endsection
+
+@push('script')
+    <script>
+        selectImage.onchange = evt => {
+            preview = document.getElementById('preview');
+            preview.style.display = 'block';
+            const [file] = selectImage.files
+            if (file) {
+                preview.src = URL.createObjectURL(file)
+            }
+        }
+    </script>
+@endpush

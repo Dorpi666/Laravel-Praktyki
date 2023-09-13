@@ -14,6 +14,5 @@ class Policies extends Model
     {
         return $user->role === 'admin';
     }
-
     
 }

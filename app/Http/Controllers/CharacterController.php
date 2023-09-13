@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Character;
+use App\Models\Image;
+use App\Helper\ImageManager;
+use Illuminate\Support\Facades\Storage;
+
 class CharacterController extends Controller
 {
-    
+    use ImageManager;
 
 
     public function index()
@@ -70,7 +74,7 @@ class CharacterController extends Controller
         return back()->with("status", "Champion deleted successfully!");
 	    
     }
-
+    
     public function edit($id)
     {
         $character = Character::find($id);
@@ -94,6 +98,30 @@ class CharacterController extends Controller
 	    
     }
 
+    public function storeImage(Request $request, $id)
+{
+    $request->validate([
+        'image' => 'required|image|mimes:png|max:2048',
+    ]);
+    
+    $path = storage_path('Grafika');
+
+    if (! is_dir($path)) {
+        mkdir($path, 0777, true);
+    }
+
+    if ($file = $request->file('image')) {
+        $filePath = $file->store(options: 'grafiki');
+        Character::where('id', $id)->update(['ChampPicture' => 'storage/Grafika/'.$filePath]);
+        //Character::where('id', $id)->update(array('ChampPicture' => 'storage/Grafika/'.$fileData['fileName']));
+        //Character::where('id', $id)->update(['ChampPicture' => 'storage/Grafika'.$fileData['fileName'].'.'.$fileData['extension']]);
+    }
+    
+
+    return redirect()
+        ->back()
+        ->with('success', 'Image successfully uploaded.');
+}
 
     
 }

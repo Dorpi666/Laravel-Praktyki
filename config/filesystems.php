@@ -56,6 +56,13 @@ return [
             'throw' => false,
         ],
 
+        'grafiki' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/Grafika'),
+            'url' => env('APP_URL').'/storage/Grafika',
+            'visibility' => 'public',
+            'throw' => false,
+        ],
     ],
 
     /*
@@ -70,6 +77,7 @@ return [
     */
 
     'links' => [
+        public_path('grafiki') => storage_path('app/public/Grafika'),
         public_path('storage') => storage_path('app/public'),
     ],
 
