@@ -3,9 +3,10 @@
 @section('content')
 <h1>Wybrana Postać</h1>
 
+    
     <div class="ChampPicture">
-            
-                <img src="{{ asset($character['ChampPicture']) }}" width="50%" height="50%">                
+           
+                <img src="{{ $imageUrlBanner }}" width="50%" height="50%">                
                 
     </div>
 
@@ -35,6 +36,7 @@
    
                     <hr />
                     <h4>Add comment</h4>
+                    
                     @auth
         
                     <form method="post" action="{{ route('comments.store') }}">

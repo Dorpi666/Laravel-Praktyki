@@ -69,6 +69,7 @@
 
         <a href="{{ route('registration.create') }}" style="text-decoration:none;">Rejestracja</a>
 
+        <a href="{{ route('characters.rotation') }}" style="text-decoration:none;">Rotacja na ten tydzień</a>
        
         @auth
         <a href="{{ route('Show.Users') }}" style="text-decoration:none;">Użytkownicy</a>

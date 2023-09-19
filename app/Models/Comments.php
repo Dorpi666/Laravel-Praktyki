@@ -5,6 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Http\Controllers\CommentsController;
+use Illuminate\Support\Str;
+use App\Models\User;
 
 class Comments extends Model
 {
@@ -17,7 +19,21 @@ class Comments extends Model
         'parent_id',
         'body'
     ];
+
+    
+    public function ApproveComments(): bool
+    {
+        $user = auth()->user()->id;
+
+        if (Str::contains($this->original_text, [
+            'https://', 
+            'http://'
+        ])) {
+            return false;
+        }
    
+        return $this->getApprovingUsers()->contains($user);
+    }
     
     public function user()
         {

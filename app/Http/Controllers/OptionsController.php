@@ -42,7 +42,7 @@ class OptionsController extends Controller
     public function storeAwatar(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|mimes:png|max:2048',
+            'image' => 'required|image|mimes:png,jpg,jpeg|max:2048',
         ]);
         
         $path = storage_path('Awatar');

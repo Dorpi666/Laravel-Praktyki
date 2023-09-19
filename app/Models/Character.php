@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Comments;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CharacterController;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Character extends Model
 {
@@ -19,6 +20,7 @@ class Character extends Model
     }
 
     protected $fillable = [
+        'id',
         'name',
         'role',
         'lane',
@@ -28,8 +30,29 @@ class Character extends Model
     ];
     
     protected $attributes = [
-        'ChampPicture' => 'unknown.png'
+        'ChampPicture' => 'unknown.png',
+        'role' => 'empty',
+        'lane' => 'empty',
+        'shop-cost' => 0,
+        'difficulty' => 1,
     ];
+
+    public function imageUrlAwatar(): Attribute{
+    
+        return Attribute::make(
+            get: fn ($value) => "http://ddragon.leagueoflegends.com/cdn/13.18.1/img/champion/".$this->ChampPicture
+        );
+
+    }
+
+    public function imageUrlBanner(): Attribute{
+    
+        return Attribute::make(
+            get: fn ($value) => "http://ddragon.leagueoflegends.com/cdn/img/champion/loading/".$this->name."_0.jpg"
+        );
+
+    }
+
     
     public function comments()
     {
