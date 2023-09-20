@@ -29,6 +29,21 @@
              width: 500px;
             
         }
+        .Parigmate{
+            
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 15px;
+             width: 100%;
+            display:flex;
+            
+            
+        }
+        .Paginate svg {
+            width: 20px;
+        }
+        .awatarPicture {
+             text-align: right;
+        }
         .ChampPicture{
             overflow: hidden;
             float:right;
@@ -58,6 +73,10 @@
     </style>
 
     <title> Main </title>
+
+    
+
+
 </head>
 <body>
     <div class="linki">

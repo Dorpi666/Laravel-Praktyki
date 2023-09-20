@@ -9,6 +9,9 @@ use App\Helper\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use App\Models\CharacterScore;
+use Illuminate\Support\Facades\Auth;
+use App\Models\CharacterAverage;
 
 class CharacterController extends Controller
 {
@@ -19,12 +22,14 @@ class CharacterController extends Controller
     {
         
         $characters = Character::all();
+        //$imageUrlAwatar = $characters->image_url_awatar;
         $characters = Character::paginate(15);
         
+       
         return view('character.index', [
             
         'characters' => $characters,
-        
+        //'imageUrlAwatar' => $imageUrlAwatar,
     ]);
 
        // return view('character.index');
@@ -83,10 +88,11 @@ class CharacterController extends Controller
     public function show(int $id)
     {
         $character = Character::where('id', $id)->firstOrFail();
-       
+        $imageUrlBanner = $character->image_url_banner;
         
         return view('character.show', [
-            'character' => $character
+            'character' => $character,
+            'imageUrlBanner' => $imageUrlBanner,
         ]);
     }
 
@@ -208,4 +214,37 @@ public function filter(Request $request)
     //dd($characters->get());
     return view('character.index', ['characters' => $characters->get()]);
 }
+
+    public function ChampionScore(Request $request)
+    {
+      
+        $characterscore = new CharacterScore();
+        $characterscore->ChampionId = $request->ChampionId;
+        $characterscore->UserId = Auth::user()->id;
+        $characterscore->Score = $request->Score;
+        $characterscore->save();
+
+
+        return redirect()->back()->with('success','Your review has been submitted Successfully,');
+
+    }
+/*
+    public function ChampionAverage(Request $request)
+    {
+        $characteraverage = new CharacterAverage();
+        if($characteraverage->ChampionId === $request->ChampionId)
+        {
+            $characteraverage->WholeScore + $request->Score;
+            $characteraverage->HowMuchReviews + 1;
+        }
+        else
+        {
+            $characteraverage->ChampionId = $request->ChampionId;
+            $characteraverage->WholeScore = $request->Score;
+            $characteraverage->HowMuchReviews = 1;
+        }
+        return redirect()->back()->with('success','Your review has been submitted Successfully,');
+
+    }
+*/
 }

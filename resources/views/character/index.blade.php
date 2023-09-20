@@ -64,11 +64,11 @@
 
     
 
-
+ 
     @foreach ($characters as $index => $pub)
             <h2 class="text -3xl hover:text-gray-300">
  
-                <a href="{{ route('characters.show', ['id' => $pub->id])}}" style="text-decoration:none;">
+                <a href="{{ route('characters.show', ['id' => $pub->id])}}" style="text-decoration:none;"><img src="{{ "http://ddragon.leagueoflegends.com/cdn/13.18.1/img/champion/".$pub->ChampPicture }}" width="100" height="100">
                    
                     {{$pub['name']}} <br>
                     
@@ -76,7 +76,10 @@
                 
             </h2>
     @endforeach
-
-
+    
+    <div class="Parigmate">
+    <script src="https://cdn.tailwindcss.com"></script>
+    {{ $characters->links() }}
+    </div>
 
 @endsection
