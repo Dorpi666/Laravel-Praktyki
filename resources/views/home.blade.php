@@ -7,6 +7,6 @@
 
 Najwyżej oceniane postacie przez graczy:
 
-
+@include('character.HighestReview', [$averageReview, $ReviewChampName, $imageUrlBanner])
 
 @endsection

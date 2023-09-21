@@ -57,7 +57,6 @@ class CharacterController extends Controller
 
     public function ShowRotationChampion($value)
     {
-    
         
         $character = Character::where('name', $value)->firstOrFail();
         $image = $character->ChampPicture;
@@ -68,6 +67,7 @@ class CharacterController extends Controller
             'character' => $character,
             'imageUrlBanner' => $imageUrlBanner,
         ]);
+
     }
        
     
@@ -217,34 +217,31 @@ public function filter(Request $request)
 
     public function ChampionScore(Request $request)
     {
-      
+        
+
         $characterscore = new CharacterScore();
         $characterscore->ChampionId = $request->ChampionId;
         $characterscore->UserId = Auth::user()->id;
         $characterscore->Score = $request->Score;
-        $characterscore->save();
 
+        //CharacterScore::where('UserId', Auth::user()->id )
+        if(CharacterScore::where('UserId', Auth::user()->id)->exists())
+        {
+            //dd($characterscore);
+            //$characterscore->update();
+            $characterscore = DB::table('characterscore')
+              ->where('id', $characterscore->ChampionId)
+              ->update(['Score' => $characterscore->Score]);
+        }
+        else{
+            $characterscore->save();
+        }
+        
+        //CharacterScore::query()->groupBy('ChampionId')->avg('Score')->get();
 
         return redirect()->back()->with('success','Your review has been submitted Successfully,');
 
     }
-/*
-    public function ChampionAverage(Request $request)
-    {
-        $characteraverage = new CharacterAverage();
-        if($characteraverage->ChampionId === $request->ChampionId)
-        {
-            $characteraverage->WholeScore + $request->Score;
-            $characteraverage->HowMuchReviews + 1;
-        }
-        else
-        {
-            $characteraverage->ChampionId = $request->ChampionId;
-            $characteraverage->WholeScore = $request->Score;
-            $characteraverage->HowMuchReviews = 1;
-        }
-        return redirect()->back()->with('success','Your review has been submitted Successfully,');
 
-    }
-*/
+    
 }
