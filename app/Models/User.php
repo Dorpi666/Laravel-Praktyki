@@ -19,6 +19,13 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    public function CharacterScore()
+    {
+        
+        return $this->hasMany(CharacterScore::class, 'CharacterScoreId');
+        
+    }
+
     protected $fillable = [
         'name',
         'email',

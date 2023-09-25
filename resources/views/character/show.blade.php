@@ -99,7 +99,6 @@
 
 <h1>Wybrana Postać</h1>
 
-    
     <div class="ChampPicture">
            
                 <img src="{{ $imageUrlBanner }}" width="100%" height="100%">                

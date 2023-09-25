@@ -31,7 +31,7 @@ class Comments extends Model
         ])) {
             return false;
         }
-   
+    
         return $this->getApprovingUsers()->contains($user);
     }
     
@@ -39,7 +39,11 @@ class Comments extends Model
         {
             return $this->belongsTo(User::class);
         }
-   
+    
+    public function character()
+        {
+            return $this->belongsTo(Character::class);
+        }
     
     public function replies()
         {

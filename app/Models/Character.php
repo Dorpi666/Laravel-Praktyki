@@ -19,6 +19,14 @@ class Character extends Model
         
     }
 
+    public function CharacterScore()
+    {
+
+        
+        return $this->hasMany(CharacterScore::class, 'CharacterScoreId');
+        
+    }
+
     protected $fillable = [
         'id',
         'name',

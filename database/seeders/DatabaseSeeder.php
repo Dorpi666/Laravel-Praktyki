@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             CharacterSeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            CharacterScoreSeeder::class
         ]);
 
     }

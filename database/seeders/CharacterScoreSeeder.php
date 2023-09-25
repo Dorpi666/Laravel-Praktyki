@@ -2,17 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\Character;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\CharacterScore;
 
-class CharacterSeeder extends Seeder
+class CharacterScoreSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        
+        CharacterScore::factory(1000)->create();
     }
 }

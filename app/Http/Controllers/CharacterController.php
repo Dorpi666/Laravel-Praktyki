@@ -9,9 +9,9 @@ use App\Helper\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
-use App\Models\CharacterScore;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CharacterAverage;
+use App\Models\CharacterScore;
 
 class CharacterController extends Controller
 {
@@ -20,6 +20,7 @@ class CharacterController extends Controller
 
     public function index()
     {
+        
         
         $characters = Character::all();
         //$imageUrlAwatar = $characters->image_url_awatar;
@@ -39,7 +40,7 @@ class CharacterController extends Controller
     {
         
         
-        $rotations = Http::withHeader('X-Riot-Token', 'RGAPI-26c06955-2094-4d76-9469-79ae6b144dc5')->get('https://eun1.api.riotgames.com/lol/platform/v3/champion-rotations');
+        $rotations = Http::withHeader('X-Riot-Token', 'RGAPI-a54dde06-dff5-4560-82f4-239b2830b741')->get('https://eun1.api.riotgames.com/lol/platform/v3/champion-rotations');
         $champions = Http::get('https://ddragon.leagueoflegends.com/cdn/13.18.1/data/pl_PL/champion.json');
         //dd($rotations);
         $rotaionChampions = collect();
@@ -218,11 +219,13 @@ public function filter(Request $request)
     public function ChampionScore(Request $request)
     {
         
-
         $characterscore = new CharacterScore();
         $characterscore->ChampionId = $request->ChampionId;
         $characterscore->UserId = Auth::user()->id;
         $characterscore->Score = $request->Score;
+
+        //$score = CharacterScore::get()->first();
+        //dd($score->user);
 
         //CharacterScore::where('UserId', Auth::user()->id )
         if(CharacterScore::where('UserId', Auth::user()->id)->exists())
@@ -236,6 +239,7 @@ public function filter(Request $request)
         else{
             $characterscore->save();
         }
+        
         
         //CharacterScore::query()->groupBy('ChampionId')->avg('Score')->get();
 
