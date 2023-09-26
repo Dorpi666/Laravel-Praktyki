@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Auth;
 use App\Models\CharacterAverage;
 use App\Models\CharacterScore;
+use App\Models\Loldle;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 
 class CharacterController extends Controller
 {
@@ -247,5 +250,142 @@ public function filter(Request $request)
 
     }
 
-    
+    public function ChampionLoldle(Request $request)
+    {
+        $Loldle = Loldle::select('created_at', 'updated_at');
+
+        if($Loldle->where('updated_at', '>', Carbon::now()->subDays(1)->toDateTimeString()))
+        {
+            $character = Loldle::first();
+            $partype = $character->partype;
+            $difficulty = $character->difficulty;
+            $stats = $character->stats;
+            $tags = $character->tags;
+            $name = $character->name;
+            return view('character.Loldle', ['partype' => $partype, 'difficulty' => $difficulty, 'stats' => $stats, 'name' => $name], ['tags' => $tags]);
+        }
+        else 
+        {
+            $character = Character::select()->inRandomOrder()->limit(1)->first();
+            $partype = $character->partype;
+            $difficulty = $character->difficulty;
+            $stats = $character->stats;
+            $tags = $character->tags;
+            $name = $character->name;
+
+            $Loldle = DB::table('LoldleChamp')
+              ->where('id', 1)
+              ->update(['name' => $character->name], ['partype' => $character->partype], ['difficulty' => $character->difficulty], ['stats' => $stats = $character->stats], ['tags' => $tags = $character->tags]);
+        
+            return view('character.Loldle', ['partype' => $partype, 'difficulty' => $difficulty, 'stats' => $stats, 'name' => $name], ['tags' => $tags]);
+        }
+
+    }
+
+    public function ChampionLoldleAnswer(Request $request)
+    {
+        $request->validate([
+            'search' => 'string|nullable',
+        ]);
+        
+        $characters = Character::query();
+        $answer = $request->all();
+        $Loldle = Loldle::first();
+        $name = $Loldle->name;
+        if (array_key_exists('search', $answer) && !empty($answer['search'])) 
+        {
+            if ($answer['search'] === $name)
+            {
+                return redirect()->back()->with('message','Odpowiedziałeś poprawnie!');
+            } 
+            else {
+                return redirect()->back()->with('message', 'Niepoprawna odpowiedź, spróbuj jeszcze raz!');
+            }
+        } 
+
+    }
+
+    public function SugerowanyTeam($id)
+    {
+        $character = Character::where('id', $id)->firstOrFail();
+
+       
+
+        // dla toplanera
+        if( $character->lane === 'Toplaner' )
+        {
+            $toplaner = $character;
+            //dd($midlaner->tags);
+            $jungler = Character::whereNotIn('tags', $toplaner->tags )->inRandomOrder()->limit(1)->first();
+            $midlaner = Character::whereNotIn('tags', $toplaner->tags )->inRandomOrder()->limit(1)->first();
+            //dd($toplaner);
+            $adc = Character::where('tags', 'LIKE', '%Marksman%')->inRandomOrder()->limit(1)->first();
+            
+            $support = Character::where('tags', 'LIKE', '%Support%')->inRandomOrder()->limit(1)->first();
+           
+            return view('character.Sugerowanie', ['midlaner' => $midlaner->name,'jungler' => $jungler->name, 'toplaner' => $toplaner->name, 'adc' => $adc->name, 'support' => $support->name]);
+        }
+
+        // dla junglera
+        if( $character->lane === 'Jungler' )
+        {
+            $jungler = $character;
+            //dd($midlaner->tags);
+            $midlaner = Character::whereNotIn('tags', $jungler->tags )->inRandomOrder()->limit(1)->first();
+            $toplaner = Character::whereNotIn('tags', $jungler->tags )->inRandomOrder()->limit(1)->first();
+            //dd($toplaner);
+            $adc = Character::where('tags', 'LIKE', '%Marksman%')->inRandomOrder()->limit(1)->first();
+            
+            $support = Character::where('tags', 'LIKE', '%Support%')->inRandomOrder()->limit(1)->first();
+           
+            return view('character.Sugerowanie', ['midlaner' => $midlaner->name,'jungler' => $jungler->name, 'toplaner' => $toplaner->name, 'adc' => $adc->name, 'support' => $support->name]);
+        }
+
+        // dla midlanera
+        if( $character->lane === 'Midlaner' )
+        {
+            $midlaner = $character;
+            //dd($midlaner->tags);
+            $jungler = Character::whereNotIn('tags', $midlaner->tags)->inRandomOrder()->limit(1)->first();
+            $toplaner = Character::whereNotIn('tags', $midlaner->tags )->inRandomOrder()->limit(1)->first();
+            //dd($toplaner);
+            $adc = Character::where('tags', 'LIKE', '%Marksman%')->inRandomOrder()->limit(1)->first();
+            
+            $support = Character::where('tags', 'LIKE', '%Support%')->inRandomOrder()->limit(1)->first();
+           
+            return view('character.Sugerowanie', ['midlaner' => $midlaner->name,'jungler' => $jungler->name, 'toplaner' => $toplaner->name, 'adc' => $adc->name, 'support' => $support->name]);
+        }
+
+        // dla ADC
+        if( $character->lane === 'ADC' )
+        {
+            $adc = $character;
+            //dd($midlaner->tags);
+            $jungler = Character::whereNotIn('tags', 'tags', 'LIKE', '%Marksman%' )->inRandomOrder()->limit(1)->first();
+            $toplaner = Character::whereNotIn('tags', 'tags', 'LIKE', '%Marksman%' )->inRandomOrder()->limit(1)->first();
+            //dd($toplaner);
+            $midlaner = Character::whereNotIn('tags', 'tags', 'LIKE', '%Marksman%' )->inRandomOrder()->limit(1)->first();
+            
+            $support = Character::where('tags', 'LIKE', '%Support%')->inRandomOrder()->limit(1)->first();
+           
+            return view('character.Sugerowanie', ['midlaner' => $midlaner->name,'jungler' => $jungler->name, 'toplaner' => $toplaner->name, 'adc' => $adc->name, 'support' => $support->name]);
+        }
+
+        // dla supporta
+        if( $character->lane === 'Support' )
+        {
+            $support = $character;
+            //dd($midlaner->tags);
+            $jungler = Character::whereNotIn('tags', 'tags', 'LIKE', '%Support%' )->inRandomOrder()->limit(1)->first();
+            $toplaner = Character::whereNotIn('tags', 'tags', 'LIKE', '%Support%' )->inRandomOrder()->limit(1)->first();
+            //dd($toplaner);
+            $midlaner = Character::whereNotIn('tags', 'tags', 'LIKE', '%Support%' )->inRandomOrder()->limit(1)->first();
+            
+            $adc = Character::where('tags', 'LIKE', '%Marksman%')->inRandomOrder()->limit(1)->first();
+           
+            return view('character.Sugerowanie', ['midlaner' => $midlaner->name,'jungler' => $jungler->name, 'toplaner' => $toplaner->name, 'adc' => $adc->name, 'support' => $support->name]);
+        }
+
+    }
+
 }

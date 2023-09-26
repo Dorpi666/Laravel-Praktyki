@@ -15,7 +15,8 @@ class CommentsResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'comments' => $this -> comments,
+            'text' => $this->body,
+            'replies' => CommentsResource::collection($this ->replies),
             //'comment' => new CommentsResource($this->whenLoaded('comment')),
 
         ];

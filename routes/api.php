@@ -32,8 +32,8 @@ Route::get('champions', function () {
 Route::get('champions/{id}', function (string $id) {
 
     
-    $comment = Character::findOrFail($id);
-    return new ChampionResource($comment->load('comments'));
+    $champion = Character::findOrFail($id);
+    return new ChampionResource($champion->load('comments'));
     
     //return new ChampionResource(Character::findOrFail($id));
 });

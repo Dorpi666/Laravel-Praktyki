@@ -42,6 +42,10 @@ Route::get('charactersRotation', [CharacterController::class, "rotation"])->name
 Route::get('ChampionFromRotation/{string}', [CharacterController::class, "ShowRotationChampion"])->name('rotation.champion'); // wyświetlanie 1 championa z rotacji wraz z informacjami o nim
 Route::post('characterScore', [CharacterController::class, "ChampionScore"])->name('character.score');
 Route::post('characterAverage', [CharacterController::class, "ChampionAverage"])->name('character.average');
+Route::get('Loldle', [CharacterController::class, "ChampionLoldle"])->name('character.loldle');
+Route::get('LoldleAnswer', [CharacterController::class, "ChampionLoldleAnswer"])->name('character.loldle.answer');
+Route::get('SugerowanyTeam/{id}', [CharacterController::class, "SugerowanyTeam"])->name('character.sugerowane');
+
 
 // route logowania 
 

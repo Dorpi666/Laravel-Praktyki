@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('role');
             $table->string('lane');
+            $table->string('partype');
+            $table->string('stats');
+            $table->json('tags');
             $table->unsignedInteger('shop-cost');
             $table->string('difficulty');
             $table->string('ChampPicture');

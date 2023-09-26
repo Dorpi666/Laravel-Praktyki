@@ -44,6 +44,9 @@ class UpdateFromAPI extends Command
                 ['id' => $champions['key']],
                 [
                     'name' => $champions['name'],
+                    'partype' => $champions['partype'],
+                    'stats' => $champions['stats']['attackrange'],
+                    'tags' => $champions['tags'],
                     'difficulty' => $champions['info']['difficulty'],
                     'ChampPicture' => $champions['image']['full'],
                 ],

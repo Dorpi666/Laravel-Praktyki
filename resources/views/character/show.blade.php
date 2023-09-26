@@ -112,13 +112,20 @@
                 Rola Postaci: {{$character['role']}}   <br>
                 Linia Postaci: {{$character['lane']}}  <br>
                 Cena Postaci: {{$character['shop-cost']}}  <br>
-                Poziom trudności Postaci: {{$character['difficulty']}}<br><br>
+                Poziom trudności Postaci: {{$character['difficulty']}}
+
+                <br><br>
+
+                <a href="{{ route('character.sugerowane' ,['id'=>$character->id]) }}" style="text-decoration:none;">Sugerowany team dla tego championa</a>    
+
+                <br><br>
 
                 @if (Gate::allows('autoryzacja')) {
                 <a href="{{ route('edit.champions',['id'=>$character->id]) }}" style="text-decoration:none;">Edytuj Championa</a>
                 }
                 @endif
-                            
+
+               
                    
                 
             

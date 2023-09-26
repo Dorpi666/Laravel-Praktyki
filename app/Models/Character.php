@@ -8,6 +8,7 @@ use App\Models\Comments;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CharacterController;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 
 class Character extends Model
 {
@@ -27,11 +28,18 @@ class Character extends Model
         
     }
 
+    protected $casts = [
+        'tags' => AsArrayObject::class,
+    ];
+    
     protected $fillable = [
         'id',
         'name',
         'role',
         'lane',
+        'partype',
+        'stats',
+        'tags',
         'shop-cost',
         'difficulty',
         'ChampPicture'
@@ -41,9 +49,14 @@ class Character extends Model
         'ChampPicture' => 'unknown.png',
         'role' => 'empty',
         'lane' => 'empty',
+        'partype' => 'empty',
+        'stats' => 'empty',
+        'tags' => 'empty',
         'shop-cost' => 0,
         'difficulty' => 1,
     ];
+
+    
 
     public function imageUrlAwatar(): Attribute{
     

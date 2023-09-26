@@ -17,16 +17,16 @@ class ChampionResource extends JsonResource
         
         return [
 
-                /*
                 'id' => $this->id,
                 'name' => $this->name,
                 'difficulty' => $this->difficulty,
-                */
                 //'Users' => new UserResource($this->whenLoaded('Users')),
-                //'comments' => $this -> comments,
-                'comments' => new ChampionResource($this->whenLoaded('comments')),
+                // 'comments' => $this -> comments,
+                'comments' => CommentsResource::collection($this->whenLoaded('comments')),
             
         ];
         
     }
+
+    
 }
