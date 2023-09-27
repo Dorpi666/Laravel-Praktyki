@@ -101,8 +101,29 @@
 
     <div class="ChampPicture">
            
-                <img src="{{ $imageUrlBanner }}" width="100%" height="100%">                
                 
+                <img src="{{ $imageUrlBanner }}" width="100%" height="100%">                
+    
+    <form action="{{ route('skins.champions', ['id'=>$character->id]) }}" method="POST">
+                    @csrf
+                    
+                       <select  name="skin_id">
+
+                            <option>Select Champion Skin</option>
+                        
+                            @foreach ($ChampSkins as $key => $value)
+                                <option value="{{ $key }}"> 
+                                    {{ $value }} 
+                                
+                                </option>
+                            @endforeach
+                        
+                        </select>
+                        
+                        <input type="submit"/>
+
+                    </form>
+
     </div>
 
     <div class="ChampText">

@@ -33,6 +33,7 @@ Route::get('/', function () {
 
 
 // route championów
+
 Route::get('/', [SiteController::class,"index"])->name('general.home');
 Route::get('Users', [UserController::class,"Users"])->name('Show.Users')->middleware('auth');
 Route::get('characters', [CharacterController::class, "index"])->name('characters.index');
@@ -45,7 +46,7 @@ Route::post('characterAverage', [CharacterController::class, "ChampionAverage"])
 Route::get('Loldle', [CharacterController::class, "ChampionLoldle"])->name('character.loldle');
 Route::get('LoldleAnswer', [CharacterController::class, "ChampionLoldleAnswer"])->name('character.loldle.answer');
 Route::get('SugerowanyTeam/{id}', [CharacterController::class, "SugerowanyTeam"])->name('character.sugerowane');
-
+Route::post('ChampionSkin/{id}', [CharacterController::class, "ChampionSkin"])->name('skins.champions');
 
 // route logowania 
 

@@ -86,7 +86,7 @@
         
         <a href="{{ route('characters.index') }}" style="text-decoration:none;">Postacie</a>
 
-        <a href="{{ route('registration.create') }}" style="text-decoration:none;">Rejestracja</a>\
+        <a href="{{ route('registration.create') }}" style="text-decoration:none;">Rejestracja</a>
 
         <a href="{{ route('character.loldle') }}" style="text-decoration:none;">Loldle</a>
 

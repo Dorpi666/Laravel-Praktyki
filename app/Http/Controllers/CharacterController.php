@@ -93,10 +93,51 @@ class CharacterController extends Controller
     {
         $character = Character::where('id', $id)->firstOrFail();
         $imageUrlBanner = $character->image_url_banner;
-        
+
+        $champions = Http::get('http://ddragon.leagueoflegends.com/cdn/13.19.1/data/pl_PL/champion/'.$character->name.'.json');
+        $ChampSkins = collect();
+
+        foreach ($champions->json('data') as $skins => $champions)
+        {
+            //dd($champions['skins']);
+            foreach($champions['skins'] as $skinIndex => $skin)
+            {
+                $ChampSkins -> put($skinIndex, $skin['name']);
+            };
+        }
+
         return view('character.show', [
             'character' => $character,
             'imageUrlBanner' => $imageUrlBanner,
+            'ChampSkins' => $ChampSkins,
+        ]);
+    }
+
+    public function ChampionSkin(Request $request, int $id)
+    {
+        $character = Character::where('id', $id)->firstOrFail();
+        $skinIndex = $request->input('skin_id', 0);
+        $ChampName = $character->name;
+        $imageUrlBanner = 'https://ddragon.leagueoflegends.com/cdn/img/champion/loading/'.$ChampName.'_'.$skinIndex.'.jpg';
+        //dd($imageUrlBanner);
+
+        
+        $champions = Http::get('http://ddragon.leagueoflegends.com/cdn/13.19.1/data/pl_PL/champion/'.$character->name.'.json');
+        $ChampSkins = collect();
+
+        foreach ($champions->json('data') as $skins => $champions)
+        {
+            //dd($champions['skins']);
+            foreach($champions['skins'] as $skinIndex => $skin)
+            {
+                $ChampSkins -> put($skinIndex, $skin['name']);
+            };
+        }
+
+        return view('character.show', [ 
+            'imageUrlBanner' => $imageUrlBanner, 
+            'character' => $character,
+            'ChampSkins' => $ChampSkins,
         ]);
     }
 
@@ -316,8 +357,8 @@ public function filter(Request $request)
         {
             $toplaner = $character;
             //dd($midlaner->tags);
-            $jungler = Character::whereNotIn('tags', $toplaner->tags )->inRandomOrder()->limit(1)->first();
-            $midlaner = Character::whereNotIn('tags', $toplaner->tags )->inRandomOrder()->limit(1)->first();
+            $jungler = Character::whereNotIn('tags', $toplaner->tags )->where('lane', 'LIKE', 'Jungler')->inRandomOrder()->limit(1)->first();
+            $midlaner = Character::whereNotIn('tags', $toplaner->tags )->where('lane', 'LIKE', 'Midlaner')->inRandomOrder()->limit(1)->first();
             //dd($toplaner);
             $adc = Character::where('tags', 'LIKE', '%Marksman%')->inRandomOrder()->limit(1)->first();
             
@@ -331,8 +372,8 @@ public function filter(Request $request)
         {
             $jungler = $character;
             //dd($midlaner->tags);
-            $midlaner = Character::whereNotIn('tags', $jungler->tags )->inRandomOrder()->limit(1)->first();
-            $toplaner = Character::whereNotIn('tags', $jungler->tags )->inRandomOrder()->limit(1)->first();
+            $midlaner = Character::whereNotIn('tags', $jungler->tags )->where('lane', 'LIKE', 'Midlaner')->inRandomOrder()->limit(1)->first();
+            $toplaner = Character::whereNotIn('tags', $jungler->tags )->where('lane', 'LIKE', 'Toplaner')->inRandomOrder()->limit(1)->first();
             //dd($toplaner);
             $adc = Character::where('tags', 'LIKE', '%Marksman%')->inRandomOrder()->limit(1)->first();
             
@@ -346,8 +387,8 @@ public function filter(Request $request)
         {
             $midlaner = $character;
             //dd($midlaner->tags);
-            $jungler = Character::whereNotIn('tags', $midlaner->tags)->inRandomOrder()->limit(1)->first();
-            $toplaner = Character::whereNotIn('tags', $midlaner->tags )->inRandomOrder()->limit(1)->first();
+            $jungler = Character::whereNotIn('tags', $midlaner->tags)->where('lane', 'LIKE', 'Jungler')->inRandomOrder()->limit(1)->first();
+            $toplaner = Character::whereNotIn('tags', $midlaner->tags )->where('lane', 'LIKE', 'Toplaner')->inRandomOrder()->limit(1)->first();
             //dd($toplaner);
             $adc = Character::where('tags', 'LIKE', '%Marksman%')->inRandomOrder()->limit(1)->first();
             
@@ -361,10 +402,10 @@ public function filter(Request $request)
         {
             $adc = $character;
             //dd($midlaner->tags);
-            $jungler = Character::whereNotIn('tags', 'tags', 'LIKE', '%Marksman%' )->inRandomOrder()->limit(1)->first();
-            $toplaner = Character::whereNotIn('tags', 'tags', 'LIKE', '%Marksman%' )->inRandomOrder()->limit(1)->first();
+            $jungler = Character::whereNotIn('tags', 'tags', 'LIKE', '%Marksman%' )->where('lane', 'LIKE', 'Jungler')->inRandomOrder()->limit(1)->first();
+            $toplaner = Character::whereNotIn('tags', 'tags', 'LIKE', '%Marksman%' )->where('lane', 'LIKE', 'Toplaner')->inRandomOrder()->limit(1)->first();
             //dd($toplaner);
-            $midlaner = Character::whereNotIn('tags', 'tags', 'LIKE', '%Marksman%' )->inRandomOrder()->limit(1)->first();
+            $midlaner = Character::whereNotIn('tags', 'tags', 'LIKE', '%Marksman%' )->where('lane', 'LIKE', 'Midlaner')->inRandomOrder()->limit(1)->first();
             
             $support = Character::where('tags', 'LIKE', '%Support%')->inRandomOrder()->limit(1)->first();
            
