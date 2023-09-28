@@ -47,7 +47,8 @@ Route::get('Loldle', [CharacterController::class, "ChampionLoldle"])->name('char
 Route::get('LoldleAnswer', [CharacterController::class, "ChampionLoldleAnswer"])->name('character.loldle.answer');
 Route::get('SugerowanyTeam/{id}', [CharacterController::class, "SugerowanyTeam"])->name('character.sugerowane');
 Route::post('ChampionSkin/{id}', [CharacterController::class, "ChampionSkin"])->name('skins.champions');
-
+Route::get('LoldlePicture', [CharacterController::class, "ChampionLoldlePicture"])->name('character.loldlePicture');
+Route::get('LoldlePictureAnswer/{id}', [CharacterController::class, "ChampionLoldlePictureAnswer"])->name('character.loldlePictureAnswer');
 // route logowania 
 
 Route::get('login', [LoginController::class, 'index'])->name('login');

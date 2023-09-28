@@ -12,6 +12,8 @@
 
 <h1> Loldle wersja gorsza</h1>
 <br>
+<a href="{{ route('character.loldlePicture') }}" style="text-decoration:none;">Loldle ze zdjęciami umiejętności championów</a>
+<br><br>
 
 Moc postaci: {{$partype}}   <br>
 Poziom trudności postaci: {{$difficulty}} <br>
@@ -19,6 +21,10 @@ Range ataku postaci: {{$stats}} <br>
 @foreach($tags as $tag)
     Typ postaci: {{$tag}} <br>
 
+@endforeach
+@foreach($ChampAbility as $Ability)
+    Nazwa umiejętności postaci:: {{$Ability}} <br><br>
+@break
 @endforeach
 
 
@@ -31,6 +37,10 @@ Podaj swoją odpowiedź, jaki jest to champion...
     </div>
 
 </form>
+
+
+
+
 
 </div>
 @endsection 

@@ -14,6 +14,7 @@ use App\Models\CharacterAverage;
 use App\Models\CharacterScore;
 use App\Models\Loldle;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 
 class CharacterController extends Controller
@@ -96,7 +97,7 @@ class CharacterController extends Controller
 
         $champions = Http::get('http://ddragon.leagueoflegends.com/cdn/13.19.1/data/pl_PL/champion/'.$character->name.'.json');
         $ChampSkins = collect();
-
+        //dd($champions);
         foreach ($champions->json('data') as $skins => $champions)
         {
             //dd($champions['skins']);
@@ -295,6 +296,7 @@ public function filter(Request $request)
     {
         $Loldle = Loldle::select('created_at', 'updated_at');
 
+    
         if($Loldle->where('updated_at', '>', Carbon::now()->subDays(1)->toDateTimeString()))
         {
             $character = Loldle::first();
@@ -303,7 +305,26 @@ public function filter(Request $request)
             $stats = $character->stats;
             $tags = $character->tags;
             $name = $character->name;
-            return view('character.Loldle', ['partype' => $partype, 'difficulty' => $difficulty, 'stats' => $stats, 'name' => $name], ['tags' => $tags]);
+            
+            $champions = Http::get('http://ddragon.leagueoflegends.com/cdn/13.19.1/data/pl_PL/champion/'.$name.'.json');
+            $ChampAbility = collect();
+            //dd($champions);
+            //dd('http://ddragon.leagueoflegends.com/cdn/13.19.1/data/pl_PL/champion/'.$name.'.json');
+            foreach ($champions->json('data') as $spells => $champions)
+            {
+                //dd($champions['skins']);
+                foreach($champions['spells'] as $spellIndex => $spell)
+                {
+                    $ChampAbility -> put($spellIndex, $spell['name']);
+                };
+            }
+
+            return view('character.Loldle',
+             ['partype' => $partype, 
+             'difficulty' => $difficulty, 
+             'stats' => $stats, 
+             'name' => $name,
+             'ChampAbility' => $ChampAbility], ['tags' => $tags] );
         }
         else 
         {
@@ -314,11 +335,29 @@ public function filter(Request $request)
             $tags = $character->tags;
             $name = $character->name;
 
+            $champions = Http::get('http://ddragon.leagueoflegends.com/cdn/13.19.1/data/pl_PL/champion/'.$name.'.json');
+            $ChampAbility = collect();
+
+            foreach ($champions->json('data') as $spells => $champions)
+            {
+                //dd($champions['skins']);
+                foreach($champions['spells'] as $spellIndex => $spell)
+                {
+                    $ChampAbility -> put($spellIndex, $spell['name']);
+                };
+            }
+
+
             $Loldle = DB::table('LoldleChamp')
               ->where('id', 1)
               ->update(['name' => $character->name], ['partype' => $character->partype], ['difficulty' => $character->difficulty], ['stats' => $stats = $character->stats], ['tags' => $tags = $character->tags]);
         
-            return view('character.Loldle', ['partype' => $partype, 'difficulty' => $difficulty, 'stats' => $stats, 'name' => $name], ['tags' => $tags]);
+            return view('character.Loldle', 
+            ['partype' => $partype, 
+            'difficulty' => $difficulty, 
+            'stats' => $stats, 
+            'name' => $name,
+            'ChampAbility' => $ChampAbility], ['tags' => $tags] );
         }
 
     }
@@ -345,6 +384,73 @@ public function filter(Request $request)
         } 
 
     }
+
+
+    public function ChampionLoldlePicture(Request $request)
+    {
+
+        $character = Character::select()->inRandomOrder()->limit(1)->first();
+        
+        $name = $character->name;
+        $replaced = Str::replace(' ', '', $name);
+        
+        //dd($replaced);
+        $champions = Http::get('http://ddragon.leagueoflegends.com/cdn/13.19.1/data/pl_PL/champion/'.$replaced.'.json');
+
+            $AbilityPicture = collect();
+            $championData = $champions->json('data');
+            //dd($champions->json('data'));
+        
+            if (empty($championData)) {
+                $champions = Http::get('http://ddragon.leagueoflegends.com/cdn/13.19.1/data/pl_PL/champion/'.$replaced.'.json');
+                $AbilityPicture = collect();
+                $championData = $champions->json('data');
+            }
+            
+            //dd($champions);
+            //dd('http://ddragon.leagueoflegends.com/cdn/13.19.1/data/pl_PL/champion/'.$name.'.json');
+            foreach ($championData  as $spells => $champions)
+            {
+                //dd($champions['skins']);
+                foreach($champions['spells'] as $PictureId => $picture)
+                {
+                    $AbilityPicture -> put($PictureId, $picture['id']);
+                    
+                };
+            }
+        
+        $AbilityPicture = 'https://ddragon.leagueoflegends.com/cdn/13.19.1/img/spell/'.$picture['id'].'.png';
+        //dd('https://ddragon.leagueoflegends.com/cdn/13.19.1/img/spell/'.$picture['id'].'.png');
+            return view('character.LoldlePicture', ['character' => $character, 'AbilityPicture' => $AbilityPicture]);
+        
+    }
+
+    public function ChampionLoldlePictureAnswer(Request $request, int $id)
+    {
+        $character = Character::where('id', $id)->firstOrFail();
+
+        
+        $request->validate([
+            'search' => 'string|nullable',
+        ]);
+        
+        $name = $character->name;
+        $answer = $request->all();
+
+        if (array_key_exists('search', $answer) && !empty($answer['search'])) 
+        {
+            if ($answer['search'] === $name)
+            {
+                return redirect()->back()->with('message','Odpowiedziałeś poprawnie!');
+            } 
+            else {
+                return redirect()->back()->with('message', 'Niepoprawna odpowiedź, spróbuj jeszcze raz!');
+            }
+        } 
+
+    
+}
+
 
     public function SugerowanyTeam($id)
     {
