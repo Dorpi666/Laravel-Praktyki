@@ -16,6 +16,7 @@ use App\Models\Loldle;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+use App\Models\ChampSpells;
 
 class CharacterController extends Controller
 {
@@ -93,6 +94,7 @@ class CharacterController extends Controller
     public function show(int $id)
     {
         $character = Character::where('id', $id)->firstOrFail();
+        $character2 = ChampSpells::where('id', $id)->firstOrFail();
         $imageUrlBanner = $character->image_url_banner;
         
         $name = $character->name;
@@ -103,7 +105,11 @@ class CharacterController extends Controller
             $AbilityPicture = collect();
             $AbilityText = collect();
             $championData = $champions->json('data');
+            $skillsData = collect();
             //dd($champions->json('data'));
+            $test = 0;
+            if(empty($champions->json('data'))){
+
             foreach ($championData  as $spells => $champions)
             {
                 //dd($champions['skins']);
@@ -114,6 +120,11 @@ class CharacterController extends Controller
                     $AbilityText ->put($PictureId, $picture['name'])->toArray();
                     
                 };
+            }
+            }
+            else
+            {
+                $skillsData = collect(array_combine($character2->SpellName->toArray(), $character2->Picture->toArray()));
             }
         
         //$AbilityPicture = 'https://ddragon.leagueoflegends.com/cdn/13.19.1/img/spell/'.$picture['id'].'.png';
@@ -136,6 +147,8 @@ class CharacterController extends Controller
             'ChampSkins' => $ChampSkins,
             'AbilityPicture' => $AbilityPicture,
             'AbilityText' => $AbilityText,
+            'SkillsData' => $skillsData,
+            'test' => $skillsData->isEmpty(),
         ]);
     }
 
@@ -325,7 +338,7 @@ public function filter(Request $request)
         if($Loldle->where('updated_at', '>', Carbon::now()->subDays(1)->toDateTimeString()))
         {
             $character = Loldle::first();
-            $partype = $character->partype;
+            //$partype = $character->partype;
             $difficulty = $character->difficulty;
             $stats = $character->stats;
             $tags = $character->tags;
@@ -345,7 +358,7 @@ public function filter(Request $request)
             }
 
             return view('character.Loldle',
-             ['partype' => $partype, 
+             [ 
              'difficulty' => $difficulty, 
              'stats' => $stats, 
              'name' => $name,

@@ -15,6 +15,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\ChampSpells;
 
 class UpdateFromAPI extends Command
 {
@@ -38,7 +39,7 @@ class UpdateFromAPI extends Command
     public function handle()
     {
         $champions = Http::get('https://ddragon.leagueoflegends.com/cdn/13.18.1/data/pl_PL/champion.json');
-
+        
         foreach ($champions->json('data') as $name => $champions) {
             Character::updateOrCreate(
                 ['id' => $champions['key']],
@@ -52,5 +53,6 @@ class UpdateFromAPI extends Command
                 ],
             );
         }
+
     }
 }

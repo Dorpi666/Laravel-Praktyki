@@ -139,6 +139,7 @@
                 <br>
 
                 Umiejętności bohatera: <br>
+                @if($test)
 
                 {{$AbilityText[0]}}
                 <img src="{{ $AbilityPicture[0] }}" width="80px" height="80px"> <br>
@@ -152,8 +153,15 @@
                 {{$AbilityText[3]}}
                 <img src="{{ $AbilityPicture[3] }}" width="80px" height="80px"> <br>
 
+                @else
+
+                @foreach($SkillsData as $name => $picture)
+                {{$name}}
+                <img src="{{ 'https://ddragon.leagueoflegends.com/cdn/13.19.1/img/spell/'.$picture.'.png' }}" width="80px" height="80px">  <br>
                 
+                @endforeach
                 
+                @endif
                 <br><br>
 
                 <a href="{{ route('character.sugerowane' ,['id'=>$character->id]) }}" style="text-decoration:none;">Sugerowany team dla tego championa</a>    
