@@ -94,7 +94,30 @@ class CharacterController extends Controller
     {
         $character = Character::where('id', $id)->firstOrFail();
         $imageUrlBanner = $character->image_url_banner;
+        
+        $name = $character->name;
+        //$replaced = Str::replace(' ', '', $name);
+        
+        $champions = Http::get('http://ddragon.leagueoflegends.com/cdn/13.19.1/data/pl_PL/champion/'.$name.'.json');
 
+            $AbilityPicture = collect();
+            $AbilityText = collect();
+            $championData = $champions->json('data');
+            //dd($champions->json('data'));
+            foreach ($championData  as $spells => $champions)
+            {
+                //dd($champions['skins']);
+                foreach($champions['spells'] as $PictureId => $picture)
+                {
+                    //$AbilityPicture ->put($PictureId, $picture['id'])->toArray();
+                    $AbilityPicture ->put($PictureId, 'https://ddragon.leagueoflegends.com/cdn/13.19.1/img/spell/'.$picture['id'].'.png')->toArray();
+                    $AbilityText ->put($PictureId, $picture['name'])->toArray();
+                    
+                };
+            }
+        
+        //$AbilityPicture = 'https://ddragon.leagueoflegends.com/cdn/13.19.1/img/spell/'.$picture['id'].'.png';
+        //dd($AbilityPicture);
         $champions = Http::get('http://ddragon.leagueoflegends.com/cdn/13.19.1/data/pl_PL/champion/'.$character->name.'.json');
         $ChampSkins = collect();
         //dd($champions);
@@ -106,11 +129,13 @@ class CharacterController extends Controller
                 $ChampSkins -> put($skinIndex, $skin['name']);
             };
         }
-
+        //dd($AbilityPicture);
         return view('character.show', [
             'character' => $character,
             'imageUrlBanner' => $imageUrlBanner,
             'ChampSkins' => $ChampSkins,
+            'AbilityPicture' => $AbilityPicture,
+            'AbilityText' => $AbilityText,
         ]);
     }
 

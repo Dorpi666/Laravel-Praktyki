@@ -135,6 +135,25 @@
                 Cena Postaci: {{$character['shop-cost']}}  <br>
                 Poziom trudności Postaci: {{$character['difficulty']}}
 
+
+                <br>
+
+                Umiejętności bohatera: <br>
+
+                {{$AbilityText[0]}}
+                <img src="{{ $AbilityPicture[0] }}" width="80px" height="80px"> <br>
+
+                {{$AbilityText[1]}}
+                <img src="{{ $AbilityPicture[1] }}" width="80px" height="80px"> <br>
+
+                {{$AbilityText[2]}}
+                <img src="{{ $AbilityPicture[2] }}" width="80px" height="80px"> <br>
+
+                {{$AbilityText[3]}}
+                <img src="{{ $AbilityPicture[3] }}" width="80px" height="80px"> <br>
+
+                
+                
                 <br><br>
 
                 <a href="{{ route('character.sugerowane' ,['id'=>$character->id]) }}" style="text-decoration:none;">Sugerowany team dla tego championa</a>    
